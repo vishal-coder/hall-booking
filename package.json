@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/vishal-coder/hall-booking#readme",
   "dependencies": {
+    "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "mongodb": "^4.7.0",
     "nodemon": "^2.0.19"

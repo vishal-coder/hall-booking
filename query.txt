@@ -1,0 +1,82 @@
+
+booked room check
+
+db.booked_rooms.find({$and:[{start_time: {$gte: new Date("2022-07-14T13:00:00.000Z"), $lte: new Date("2022-07-14T18:00:00.000Z")},end_time: {$gte: new Date("2022-07-14T13:00:00.000Z"), $lte: new Date("2022-07-14T18:00:00.000Z")}},{"id":"62d046f631d420ec26614f60"}]});
+
+
+
+db.booked_rooms.find({
+$and:[
+        {$or:[
+            {$and:[{start_time: {$lte: new Date("2022-07-15T11:00:00.000Z")}},{end_time: {$gte: new Date("2022-07-15T11:00:00.000Z")}} ]},
+            {$and:[{start_time: {$lte: new Date("2022-07-15T15:00:00.000Z")}},{end_time: {$gte: new Date("2022-07-15T15:00:00.000Z")}} ]}]},
+        {"id":"62d0f5694921308abc75c50c"}
+    ] 
+
+});
+-------------------------------------- rooms with booked data-------------------------
+db.rooms.aggregate([
+{ "$addFields": { "article_id": { "$toString": "$_id" }}},
+{$lookup:{
+			from :"booked_rooms",
+			localField: "article_id",
+			foreignField:"id",
+			as:"booking_Details"
+			
+}},
+{ $unwind: "$booking_Details" }
+  ,
+    {
+      $project: {
+        _id: 0,
+        "room number": "$_id",
+        "room name": "$room_name",
+		"Booking Status": "$booking_status",
+        "customer name": "$booking_Details.customer_name",
+        "booking date": "$booking_Details.booking_date",
+        "start date": "$booking_Details.start_time",
+        "end date": "$booking_Details.end_time",
+      },
+    }
+])
+----------------------------------------old get customer data----------------------
+ let query = [
+    { $match: { booking_Details: { $exists: true, $ne: [] } } },
+    { $unwind: "$booking_Details" },
+    {
+      $project: {
+        _id: 0,
+        "customer name": "$booking_Details.customer_name",
+        "room name": "$room_name",
+        "booking date": "$booking_Details.booking_date",
+        "start time": "$booking_Details.start_time",
+        "end time": "$booking_Details.end_time",
+      },
+    },
+  ];
+
+db.rooms.aggregate([
+    { $addFields: { room_id: { $toString: "$_id" } } },
+    {
+      $lookup: {
+        from: "booked_rooms",
+        localField: "room_id",
+        foreignField: "id",
+        as: "booking_Details",
+      },
+    },
+    { $unwind: "$booking_Details" },
+    {
+      $project: {
+        _id: 0,
+        "room number": "$_id",
+        "room name": "$room_name",
+        "Booking Status": "$booking_status",
+        "customer name": "$booking_Details.customer_name",
+        "booking time": "$booking_Details.booking_date",
+        "start time": "$booking_Details.start_time",
+        "end date": "$booking_Details.end_time",
+      },
+    },
+  ]})
+  
