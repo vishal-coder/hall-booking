@@ -4,7 +4,7 @@
 
 1.  <mark>Create Room </mark>
 
-    1. `POST` - http://localhost:3041/createroom
+    1. `POST` - https://hall-booking-heroku-guvi.herokuapp.com/createroom
     2. sample request
        ```
        {
@@ -25,7 +25,7 @@
 
 2.  <mark>Book Room </mark>
 
-    1. `POST` - http://localhost:3041/bookroom
+    1. `POST` - https://hall-booking-heroku-guvi.herokuapp.com/bookroom
     2. Sample request
 
        ```
@@ -57,7 +57,7 @@
 
 3.  <mark>List All Room </mark>
 
-    1. `GET` - http://localhost:3041/listrooms
+    1. `GET` - https://hall-booking-heroku-guvi.herokuapp.com/listrooms
     1. No request body/parameters
     1. Sample Response
 
@@ -84,7 +84,7 @@
     ```
 
 4.  <mark>List All Customers </mark>
-    1. `GET` - http://localhost:3041/listcustomers
+    1. `GET` - https://hall-booking-heroku-guvi.herokuapp.com/listcustomers
     2. No request body/parameters
     3. Sample response
     ```
